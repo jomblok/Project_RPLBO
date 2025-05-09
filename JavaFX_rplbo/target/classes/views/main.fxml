@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<?import javafx.geometry.Insets?>
+<AnchorPane prefHeight="400.0" prefWidth="723.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="id.ac.ukdw.www.rpblo.javafx_rplbo.MainController">
+   <children>
+      <TextField fx:id="searchKategori" layoutX="14.0" layoutY="22.0" prefHeight="26.0" prefWidth="162.0" promptText="Masukkan Jenis kategori ..." />
+      <TextField fx:id="searchKataKunci" layoutX="187.0" layoutY="23.0" promptText="Masukkan Kata Kunci" />
+      <HBox layoutX="389.0" layoutY="18.0" prefHeight="35.0" prefWidth="310.0">
+          <ComboBox fx:id="comboKategori" layoutX="57.0" layoutY="55.0" onAction="#SearchByCategory" prefHeight="22.0" prefWidth="75.0" />
+
+          <children>
+            <Button mnemonicParsing="false" onAction="#addCategory" text="addCategory">
+               <HBox.margin>
+                  <Insets right="8.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#SearchByCategory" text="SearchByCategory">
+               <HBox.margin>
+                  <Insets right="8.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="btnKeluar" mnemonicParsing="false" onAction="#Keluar" text="Keluar" />
+         </children>
+      </HBox>
+      <Line endX="723.0000610351562" endY="58.70001220703125" startX="1.220703143189894E-5" startY="58.70001220703125" />
+      <TableView fx:id="TableView" layoutX="22.0" layoutY="78.0" prefHeight="298.0" prefWidth="678.0">
+        <columns>
+          <TableColumn fx:id="noColumn" prefWidth="75.0" text="No" />
+          <TableColumn fx:id="todolist" prefWidth="165.60003662109375" text="ToDoList" />
+            <TableColumn fx:id="deadline" prefWidth="127.19996643066406" text="DeadLine" />
+            <TableColumn fx:id="kategori" prefWidth="152.0" text="Kategori" />
+            <TableColumn fx:id="aksi" prefWidth="156.79996337890623" text="Aksi" />
+        </columns>
+      </TableView>
+      <Button layoutX="683.0" layoutY="342.0" mnemonicParsing="false" onAction="#modul_tambah_todolist" style="-fx-background-radius: 50;                            -fx-min-width: 35;                            -fx-min-height: 35;                            -fx-max-width: 35;                            -fx-max-height: 35;                            -fx-background-color: #4CAF50;                            -fx-text-fill: white;" text="+" />
+   </children>
+</AnchorPane>
