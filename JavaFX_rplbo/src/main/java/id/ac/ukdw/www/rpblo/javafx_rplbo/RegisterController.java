@@ -1,9 +1,9 @@
 package id.ac.ukdw.www.rpblo.javafx_rplbo;
 
+import id.ac.ukdw.www.rpblo.javafx_rplbo.Apps;
 import javafx.fxml.FXML;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
 
 public class RegisterController {
 
@@ -23,22 +23,10 @@ public class RegisterController {
         String confirm = confirmPasswordField.getText();
 
         if (pass.equals(confirm)) {
-            UserSession.registeredUsername = user;
-            UserSession.registeredPassword = pass;
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Registrasi Berhasil");
-            alert.setHeaderText(null);
-            alert.setContentText("Akun berhasil dibuat. Silakan login.");
-            alert.showAndWait();
-
-            Apps.showLogin();
+            System.out.println("Registrasi sukses untuk: " + user);
+            Apps.showLogin(); // Kembali ke login setelah berhasil
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Password tidak cocok!");
-            alert.setContentText("Silakan isi ulang password dengan benar.");
-            alert.showAndWait();
+            System.out.println("Password tidak cocok");
         }
     }
 
