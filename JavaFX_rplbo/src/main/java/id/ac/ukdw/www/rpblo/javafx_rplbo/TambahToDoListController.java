@@ -6,10 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -55,7 +52,19 @@ public class TambahToDoListController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        kategoriComboBox.getItems().addAll("Kuliah", "Kerja", "Belanja", "Lainnya");
+        kategoriComboBox.setItems(KategoriController.getKategoriComboBoxItems());
+
+        //  Batasi agar hanya bisa pilih hari ini atau ke depan
+        deadline.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (date.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffc0cb;"); // Warna penanda
+                }
+            }
+        });
     }
 
 

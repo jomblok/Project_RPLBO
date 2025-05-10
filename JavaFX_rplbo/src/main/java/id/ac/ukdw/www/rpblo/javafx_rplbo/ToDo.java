@@ -13,6 +13,7 @@ public class ToDo {
     private final StringProperty kategori;
     private final BooleanProperty prioritas;
     private ToDo currentToDo;
+    private BooleanProperty selected = new SimpleBooleanProperty(false);
 
     // Constructor
     public ToDo(String judul, String deskripsi, String deadline, String kategori, boolean prioritas) {
@@ -36,6 +37,10 @@ public class ToDo {
     public String getKategori() { return kategori.get(); }
     public boolean isPrioritas() { return prioritas.get(); }
 
+    public boolean isSelected() { return selected.get(); }
+    public void setSelected(boolean selected) { this.selected.set(selected); }
+
+    public BooleanProperty selectedProperty() { return selected; }
     // Setters
     public void setJudul(String judul) { this.judul.set(judul); }
     public void setDeskripsi(String deskripsi) { this.deskripsi.set(deskripsi); }

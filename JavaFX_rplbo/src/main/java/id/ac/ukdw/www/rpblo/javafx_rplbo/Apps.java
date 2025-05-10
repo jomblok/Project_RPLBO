@@ -50,7 +50,7 @@ public class Apps extends Application {
                 return;
             }
             FXMLLoader loader = new FXMLLoader(fxml);
-            Scene scene = new Scene(loader.load(), 800, 600);
+            Scene scene = new Scene(loader.load(), 830, 400);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Main To-Do List");
             primaryStage.show();
@@ -91,6 +91,7 @@ public class Apps extends Application {
             e.printStackTrace();
         }
     }
+
 
     public static void main(String[] args) {
         launch(args);
