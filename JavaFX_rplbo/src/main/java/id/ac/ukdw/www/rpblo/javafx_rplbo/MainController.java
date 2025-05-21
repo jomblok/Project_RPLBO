@@ -163,7 +163,7 @@ public class MainController {
     }
 
 
-
+    //
     private void filterByKategoriTextField(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             TableView.setItems(toDoList);
@@ -192,10 +192,10 @@ public class MainController {
         ObservableList<ToDo> hasilFilter = FXCollections.observableArrayList();
         for (ToDo todo : toDoList) {
             String judul = todo.getJudul() != null ? todo.getJudul().toLowerCase() : "";
-            String kategori = todo.getKategori() != null ? todo.getKategori().toLowerCase() : "";
             String deadline = todo.getDeadline() != null ? todo.getDeadline().toLowerCase() : "";
+            String deskripsi = todo.getDeskripsi() != null ? todo.getDeadline().toLowerCase():"";
 
-            if (judul.contains(search) || kategori.contains(search) || deadline.contains(search)) {
+            if (judul.contains(search) || deadline.contains(search) || deskripsi.contains(search)){
                 hasilFilter.add(todo);
             }
         }
