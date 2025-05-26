@@ -1,5 +1,7 @@
 package id.ac.ukdw.www.rpblo.javafx_rplbo;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TableRow;
+import javafx.util.Duration;
 
 public class MainController {
 
@@ -200,5 +203,13 @@ public class MainController {
 
         TableView.setItems(hasilFilter);
         TableView.refresh();
+    }
+
+    private void mulaiPengingatDeadline() {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
+            periksaDeadlineBesok();
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 }
