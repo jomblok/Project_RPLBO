@@ -166,7 +166,7 @@ public class MainController {
     //
     private void filterByKategoriTextField(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
-            TableView.setItems(toDoList);
+            TableView.setItems(toDoList); // tampilkan semua
         } else {
             ObservableList<ToDo> hasilFilter = FXCollections.observableArrayList();
             for (ToDo todo : toDoList) {
@@ -176,9 +176,7 @@ public class MainController {
                 }
             }
             TableView.setItems(hasilFilter);
-            TableView.refresh();
         }
-
     }
 
     private void filterToDoByAllFields(String keyword) {
