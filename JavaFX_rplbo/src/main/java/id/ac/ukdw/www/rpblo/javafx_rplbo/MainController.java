@@ -1,5 +1,7 @@
 package id.ac.ukdw.www.rpblo.javafx_rplbo;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,6 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TableRow;
+import javafx.util.Duration;
+
+import java.time.LocalDate;
 
 public class MainController {
 
@@ -147,19 +152,23 @@ public class MainController {
             }
         });
 
-        // Data awal
+        // Tampilkan semua tugas awalnya
         TableView.setItems(toDoList);
 
-        // Combo box
-        ObservableList<String> semuaKategori = FXCollections.observableArrayList();
-        semuaKategori.add("Semua");
-        semuaKategori.addAll(KategoriController.getKategoriComboBoxItems());
-        comboKategori.setItems(semuaKategori);
+        // Isi ComboBox kategori dan event listener
+        comboKategori.setItems(FXCollections.observableArrayList("Semua", "Kuliah", "Pekerjaan", "Pribadi"));
         comboKategori.setValue("Semua");
 
-        // Pencarian
-        searchKategori.textProperty().addListener((obs, oldVal, newVal) -> filterByKategoriTextField(newVal));
-        searchKataKunci.textProperty().addListener((obs, oldVal, newVal) -> filterToDoByAllFields(newVal));
+        // Tambahkan listener agar filtering jalan otomatis saat pilihan berubah
+        comboKategori.setOnAction(this::SearchByCategory);
+
+        searchKategori.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterByKategoriTextField(newValue);
+
+        });
+        // ⏰ Panggil notifikasi deadline H-1
+        cekPengingatSekarang();
+        mulaiPengingatDeadline();
     }
 
 
@@ -201,4 +210,39 @@ public class MainController {
         TableView.setItems(hasilFilter);
         TableView.refresh();
     }
+
+    private void mulaiPengingatDeadline() {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
+            periksaDeadlineBesok();
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    private void cekPengingatSekarang() {
+        periksaDeadlineBesok();
+    }
+
+    private void periksaDeadlineBesok() {
+        LocalDate besok = LocalDate.now().plusDays(1);
+        for (ToDo todo : toDoList) {
+            try {
+                LocalDate deadlineToDo = LocalDate.parse(todo.getDeadline());
+                String idUnik = todo.getJudul() + "-" + todo.getDeadline();
+                if (deadlineToDo.equals(besok) && !sudahDiingatkan.contains(idUnik)) {
+                    sudahDiingatkan.add(idUnik);
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Pengingat Deadline");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Deadline tugas \"" + todo.getJudul() + "\" adalah BESOK!");
+                        alert.showAndWait();
+                    });
+                }
+            } catch (Exception e) {
+                System.err.println("Gagal memeriksa deadline untuk todo: " + todo.getJudul());
+            }
+        }
+    }
+
 }

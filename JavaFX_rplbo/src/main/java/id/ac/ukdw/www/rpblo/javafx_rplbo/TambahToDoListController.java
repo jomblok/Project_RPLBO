@@ -68,30 +68,6 @@ public class TambahToDoListController implements Initializable {
     }
 
 
-    @FXML
-    void submit(ActionEvent event) {
-        String taskJudul = judul.getText();
-        String taskDeskripsi = deskripsi.getText();
-        String taskDeadline = deadline.getValue() != null ? deadline.getValue().toString() : "";
-        String taskKategori = kategoriComboBox.getValue();
-        boolean isPrioritas = prioritas.isSelected();
-
-        if (currentToDo != null) {
-            currentToDo.setJudul(taskJudul);
-            currentToDo.setDeskripsi(taskDeskripsi);
-            currentToDo.setDeadline(taskDeadline);
-            currentToDo.setKategori(taskKategori);
-            currentToDo.setPrioritas(isPrioritas);
-        } else {
-            ToDo newToDo = new ToDo(taskJudul, taskDeskripsi, taskDeadline, taskKategori, isPrioritas);
-            MainController.getToDoList().add(newToDo);
-        }
-
-        // Kembali ke main
-        stage.close();
-    }
-
-
 
     @FXML
     void goback(ActionEvent event) {
@@ -117,4 +93,39 @@ public class TambahToDoListController implements Initializable {
             prioritas.setSelected(currentToDo.isPrioritas());
         }
     }
+
+    @FXML
+    void submit(ActionEvent event) {
+        String taskJudul = judul.getText();
+        String taskDeskripsi = deskripsi.getText();
+        String taskDeadline = deadline.getValue() != null ? deadline.getValue().toString() : "";
+        String taskKategori = kategoriComboBox.getValue();
+        boolean isPrioritas = prioritas.isSelected();
+
+        if (currentToDo != null) {
+            currentToDo.setJudul(taskJudul);
+            currentToDo.setDeskripsi(taskDeskripsi);
+            currentToDo.setDeadline(taskDeadline);
+            currentToDo.setKategori(taskKategori);
+            currentToDo.setPrioritas(isPrioritas);
+        } else {
+            ToDo newToDo = new ToDo(taskJudul, taskDeskripsi, taskDeadline, taskKategori, isPrioritas);
+            MainController.getToDoList().add(newToDo);
+        }
+
+        // ✅ Tampilkan notifikasi sukses
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Sukses");
+        alert.setHeaderText(null);
+        alert.setContentText("ToDo berhasil disimpan!");
+        alert.showAndWait();
+
+
+        // Kembali ke main
+        stage.close();
+    }
+
+    
+
+
 }
