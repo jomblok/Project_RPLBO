@@ -212,4 +212,9 @@ public class MainController {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
+
+    private void cekPengingatSekarang() {
+        periksaDeadlineBesok();
+    }
+
 }
