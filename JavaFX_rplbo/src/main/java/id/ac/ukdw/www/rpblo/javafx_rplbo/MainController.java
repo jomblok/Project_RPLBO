@@ -13,6 +13,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TableRow;
 import javafx.util.Duration;
 
+import java.time.LocalDate;
+
 public class MainController {
 
     @FXML public TextField searchKataKunci;
@@ -215,6 +217,28 @@ public class MainController {
 
     private void cekPengingatSekarang() {
         periksaDeadlineBesok();
+    }
+
+    private void periksaDeadlineBesok() {
+        LocalDate besok = LocalDate.now().plusDays(1);
+        for (ToDo todo : toDoList) {
+            try {
+                LocalDate deadlineToDo = LocalDate.parse(todo.getDeadline());
+                String idUnik = todo.getJudul() + "-" + todo.getDeadline();
+                if (deadlineToDo.equals(besok) && !sudahDiingatkan.contains(idUnik)) {
+                    sudahDiingatkan.add(idUnik);
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Pengingat Deadline");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Deadline tugas \"" + todo.getJudul() + "\" adalah BESOK!");
+                        alert.showAndWait();
+                    });
+                }
+            } catch (Exception e) {
+                System.err.println("Gagal memeriksa deadline untuk todo: " + todo.getJudul());
+            }
+        }
     }
 
 }
