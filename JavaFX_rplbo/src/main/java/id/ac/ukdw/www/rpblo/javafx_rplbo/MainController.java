@@ -152,19 +152,23 @@ public class MainController {
             }
         });
 
-        // Data awal
+        // Tampilkan semua tugas awalnya
         TableView.setItems(toDoList);
 
-        // Combo box
-        ObservableList<String> semuaKategori = FXCollections.observableArrayList();
-        semuaKategori.add("Semua");
-        semuaKategori.addAll(KategoriController.getKategoriComboBoxItems());
-        comboKategori.setItems(semuaKategori);
+        // Isi ComboBox kategori dan event listener
+        comboKategori.setItems(FXCollections.observableArrayList("Semua", "Kuliah", "Pekerjaan", "Pribadi"));
         comboKategori.setValue("Semua");
 
-        // Pencarian
-        searchKategori.textProperty().addListener((obs, oldVal, newVal) -> filterByKategoriTextField(newVal));
-        searchKataKunci.textProperty().addListener((obs, oldVal, newVal) -> filterToDoByAllFields(newVal));
+        // Tambahkan listener agar filtering jalan otomatis saat pilihan berubah
+        comboKategori.setOnAction(this::SearchByCategory);
+
+        searchKategori.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterByKategoriTextField(newValue);
+
+        });
+        // ⏰ Panggil notifikasi deadline H-1
+        cekPengingatSekarang();
+        mulaiPengingatDeadline();
     }
 
 
