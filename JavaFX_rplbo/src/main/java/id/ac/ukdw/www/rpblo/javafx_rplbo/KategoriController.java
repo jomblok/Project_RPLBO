@@ -1,17 +1,19 @@
 package id.ac.ukdw.www.rpblo.javafx_rplbo;
 
+import id.ac.ukdw.www.rpblo.javafx_rplbo.Manager.MariaDBDriver;
+import id.ac.ukdw.www.rpblo.javafx_rplbo.Manager.Sessionmanager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
+
+import java.sql.*;
 
 public class KategoriController {
+
     @FXML
     private TextField inputKategori;
 
@@ -25,9 +27,7 @@ public class KategoriController {
     private TableColumn<Kategori, Void> kolomAksi;
 
     private final ObservableList<Kategori> daftarKategori = FXCollections.observableArrayList();
-
-    // ObservableList untuk digunakan oleh ComboBox di controller lain
-    private static ObservableList<String> kategoriComboBoxItems = FXCollections.observableArrayList();
+    private static final ObservableList<String> kategoriComboBoxItems = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
@@ -41,15 +41,17 @@ public class KategoriController {
             {
                 btnHapus.setOnAction(e -> {
                     Kategori item = getTableView().getItems().get(getIndex());
+                    hapusKategoriDariDatabase(item.getNama());
                     daftarKategori.remove(item);
-                    kategoriComboBoxItems.remove(item.getNama()); // Hapus kategori dari ComboBox
+                    kategoriComboBoxItems.remove(item.getNama());
                 });
 
                 btnEdit.setOnAction(e -> {
                     Kategori item = getTableView().getItems().get(getIndex());
                     inputKategori.setText(item.getNama());
-                    daftarKategori.remove(item); // Hapus dulu, lalu bisa ditambah lagi
-                    kategoriComboBoxItems.remove(item.getNama()); // Hapus kategori dari ComboBox
+                    hapusKategoriDariDatabase(item.getNama());
+                    daftarKategori.remove(item);
+                    kategoriComboBoxItems.remove(item.getNama());
                 });
             }
 
@@ -61,6 +63,7 @@ public class KategoriController {
         });
 
         tabelKategori.setItems(daftarKategori);
+        loadKategoriDariDatabase();
     }
 
     @FXML
@@ -71,21 +74,67 @@ public class KategoriController {
     @FXML
     private void tambahKategori() {
         String nama = inputKategori.getText().trim();
+        int userId = Sessionmanager.getCurrentUserId();
         if (!nama.isEmpty()) {
-            Kategori kategoriBaru = new Kategori(nama);
-            daftarKategori.add(kategoriBaru);
-            kategoriComboBoxItems.add(nama);  // Tambahkan kategori ke ComboBox di controller lain
-            inputKategori.clear();
+            try {
+                Connection conn = MariaDBDriver.getInstance().getConnection();
+                String sql = "INSERT INTO kategori (nama, user_id) VALUES (?, ?)";
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setString(1, nama);
+                stmt.setInt(2, userId);
+                stmt.executeUpdate();
+                stmt.close();
+
+                Kategori kategoriBaru = new Kategori(nama);
+                daftarKategori.add(kategoriBaru);
+                kategoriComboBoxItems.add(nama);
+                inputKategori.clear();
+            } catch (SQLException e) {
+                System.out.println("Gagal menambah kategori: " + e.getMessage());
+            }
         }
     }
-    static {
-        kategoriComboBoxItems.addAll("Kuliah", "Kerja", "Belanja", "Lainnya");
+
+    private void loadKategoriDariDatabase() {
+        daftarKategori.clear();
+        kategoriComboBoxItems.clear();
+        int userId = Sessionmanager.getCurrentUserId();
+        try {
+            Connection conn = MariaDBDriver.getInstance().getConnection();
+            String sql = "SELECT nama FROM kategori WHERE user_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String nama = rs.getString("nama");
+                Kategori kategori = new Kategori(nama);
+                daftarKategori.add(kategori);
+                kategoriComboBoxItems.add(nama);
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println("Gagal memuat kategori: " + e.getMessage());
+        }
+    }
+
+    private void hapusKategoriDariDatabase(String nama) {
+        int userId = Sessionmanager.getCurrentUserId();
+        try {
+            Connection conn = MariaDBDriver.getInstance().getConnection();
+            String sql = "DELETE FROM kategori WHERE nama = ? AND user_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, nama);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println("Gagal menghapus kategori: " + e.getMessage());
+        }
     }
 
     public static ObservableList<String> getKategoriComboBoxItems() {
         return kategoriComboBoxItems;
     }
-
 
     public static class Kategori {
         private final SimpleStringProperty nama;
