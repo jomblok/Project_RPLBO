@@ -110,7 +110,12 @@ public class TambahToDoListController implements Initializable {
             currentToDo.setPrioritas(isPrioritas);
         } else {
             ToDo newToDo = new ToDo(taskJudul, taskDeskripsi, taskDeadline, taskKategori, isPrioritas);
-            MainController.getToDoList().add(newToDo);
+            if (isPrioritas) {
+                MainController.getToDoList().add(0, newToDo); //membuat prioritas menjadi urutan paling atas
+
+            } else {
+                MainController.getToDoList().add(newToDo);
+            }
         }
 
         // ✅ Tampilkan notifikasi sukses

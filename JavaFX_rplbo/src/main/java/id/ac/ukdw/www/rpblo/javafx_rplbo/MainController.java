@@ -135,7 +135,10 @@ public class MainController {
                 if (item == null || empty) {
                     setStyle("");
                 } else {
-                    if (item.isSelected()) {
+                    if (item.isPrioritas()) {
+                        setStyle("-fx-background-color: #e6d3aa;");
+                    }
+                    else if (item.isSelected()) {
                         setStyle("-fx-background-color: #d4fcd4;");
                     } else {
                         setStyle("");
