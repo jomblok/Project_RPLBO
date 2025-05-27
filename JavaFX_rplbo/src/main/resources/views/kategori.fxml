@@ -4,32 +4,46 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="350" prefWidth="500" style="-fx-background-color: white;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="id.ac.ukdw.www.rpblo.javafx_rplbo.KategoriController">
-    <VBox layoutX="9.0" layoutY="9.0" prefHeight="331.0" prefWidth="479.0" spacing="10">
+<AnchorPane prefHeight="380" prefWidth="520"
+            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            fx:controller="id.ac.ukdw.www.rpblo.javafx_rplbo.KategoriController"
+            style="-fx-background-color: #888C8D;">
+
+    <VBox layoutX="10.0" layoutY="10.0" spacing="15"
+          prefHeight="360" prefWidth="500"
+          style="-fx-background-color: #FFFFFF; -fx-border-color: #393232; -fx-border-width: 1.5; -fx-border-radius: 10; -fx-background-radius: 10;">
         <VBox.margin>
-            <Insets bottom="20" left="20" right="20" top="20" />
+            <Insets top="20" right="20" bottom="20" left="20"/>
         </VBox.margin>
 
-        <!-- Input Tambahkan Kategori -->
-        <HBox alignment="CENTER_LEFT" spacing="5">
-            <TextField fx:id="inputKategori" promptText="tambahkan kategori..." HBox.hgrow="ALWAYS" />
-            <Button onAction="#tambahKategori" text="Tambah" />
+        <!-- Judul -->
+        <Label text="Manajemen Kategori"
+               style="-fx-text-fill: #393232; -fx-font-size: 20px; -fx-font-weight: bold;"
+               alignment="CENTER_LEFT"/>
+
+        <!-- Input Tambah Kategori -->
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <TextField fx:id="inputKategori" promptText="Tambahkan kategori baru..."
+                       HBox.hgrow="ALWAYS"
+                       style="-fx-background-color: white; -fx-border-color: #888C8D; -fx-border-radius: 6; -fx-padding: 8 12;" />
+            <Button text="Tambah" onAction="#tambahKategori"
+                    style="-fx-background-color: #776B5D; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 6 16; -fx-background-radius: 6;" />
         </HBox>
 
         <!-- Tabel Kategori -->
-        <TableView fx:id="tabelKategori" prefHeight="200">
+        <TableView fx:id="tabelKategori" prefHeight="200"
+                   style="-fx-border-color: #393232; -fx-border-radius: 6; -fx-background-radius: 6;">
             <columns>
-                <TableColumn fx:id="kolomNama" prefWidth="300" text="Nama Kategori" />
-                <TableColumn fx:id="kolomAksi" prefWidth="150" text="Aksi" />
+                <TableColumn fx:id="kolomNama" text="Nama Kategori" prefWidth="300"/>
+                <TableColumn fx:id="kolomAksi" text="Aksi" prefWidth="150"/>
             </columns>
         </TableView>
 
-        <!-- Tombol Aksi Umum -->
-        <HBox alignment="CENTER_RIGHT" spacing="20">
-            <padding>
-                <Insets bottom="10" left="10" right="10" top="10" />
-            </padding>
-            <Button text="Cancel" onAction="#toHalamanUtama"/>
+        <!-- Tombol Kembali -->
+        <HBox alignment="CENTER_RIGHT" padding="10">
+            <Button text="Kembali" onAction="#toHalamanUtama"
+                    style="-fx-background-color: #393232; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 6 18; -fx-background-radius: 6;" />
         </HBox>
     </VBox>
 </AnchorPane>

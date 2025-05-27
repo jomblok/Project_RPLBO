@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="id.ac.ukdw.www.rpblo.javafx_rplbo.TambahToDoListController">
+<AnchorPane style="-fx-background-color: #888C8D;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="id.ac.ukdw.www.rpblo.javafx_rplbo.TambahToDoListController">
 
+    <SplitPane dividerPositions="0.3" prefHeight="400.0" prefWidth="600.0">
+        <items>
+            <!-- Panel Kiri -->
+            <AnchorPane prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #776B5D;">
+                <children>
+                    <Label layoutX="13.0" layoutY="84.0" style="-fx-text-fill: #FFFFFF; -fx-font-weight: bold;" text="Deadline" />
+                    <DatePicker fx:id="deadline" layoutX="13.0" layoutY="111.0" prefWidth="151.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #888C8D;" />
+                    <CheckBox fx:id="prioritas" layoutX="34.0" layoutY="159.0" prefHeight="39.0" prefWidth="104.0" style="-fx-text-fill: #FFFFFF;" text="Prioritas">
+                  <font>
+                     <Font size="16.0" />
+                  </font></CheckBox>
+                    <ComboBox fx:id="kategoriComboBox" layoutX="13.0" layoutY="42.0" prefWidth="150.0" promptText="Kategori" style="-fx-background-color: #FFFFFF; -fx-border-color: #888C8D;" />
+                </children>
+            </AnchorPane>
 
-<SplitPane dividerPositions="0.3061497326203208" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <items>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-            <children>
-                <Label layoutX="13.0" layoutY="84.0" prefHeight="26.0" prefWidth="62.0" text="Deadline" />
-                <DatePicker fx:id="deadline" layoutX="13.0" layoutY="111.0" prefHeight="26.0" prefWidth="151.0" />
-                <CheckBox fx:id="prioritas" layoutX="14.0" layoutY="150.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="85.0" text="Prioritas" />
-               <ComboBox fx:id="kategoriComboBox" layoutX="13.0" layoutY="42.0" prefWidth="150.0" promptText="Kategori" />
-            </children></AnchorPane>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-            <children>
-                <Button layoutX="315.0" layoutY="338.0" mnemonicParsing="false" onAction="#goback" prefHeight="26.0" prefWidth="62.0" text="Cancel" />
-                <Label layoutX="45.0" layoutY="14.0" prefHeight="26.0" prefWidth="62.0" text="Judul" />
-                <TextArea fx:id="judul" layoutX="37.0" layoutY="40.0" prefHeight="26.0" prefWidth="337.0" />
-                <Label layoutX="45.0" layoutY="86.0" prefHeight="26.0" prefWidth="62.0" text="Deskripsi" />
-                <TextArea fx:id="deskripsi" layoutX="36.0" layoutY="112.0" prefHeight="158.0" prefWidth="338.0" />
-                <Button layoutX="244.0" layoutY="338.0" mnemonicParsing="false" onAction="#submit" prefHeight="26.0" prefWidth="62.0" text="OK" />
-            </children></AnchorPane>
+            <!-- Panel Kanan -->
+            <AnchorPane prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #FFFFFF;">
+                <children>
+                    <Label layoutX="45.0" layoutY="14.0" style="-fx-text-fill: #776B5D; -fx-font-weight: bold;" text="Judul" />
+                    <TextArea fx:id="judul" layoutX="37.0" layoutY="40.0" prefHeight="26.0" prefWidth="337.0" style="-fx-border-color: #888C8D;" />
 
-    </items>
-</SplitPane>
+                    <Label layoutX="45.0" layoutY="86.0" style="-fx-text-fill: #776B5D; -fx-font-weight: bold;" text="Deskripsi" />
+                    <TextArea fx:id="deskripsi" layoutX="36.0" layoutY="112.0" prefHeight="158.0" prefWidth="338.0" style="-fx-border-color: #888C8D;" />
+
+                    <Button fx:id="submit" layoutX="244.0" layoutY="338.0" onAction="#submit" prefHeight="27.0" prefWidth="50.0" style="-fx-background-color: #776B5D; -fx-text-fill: #FFFFFF; -fx-border-color: #888C8D;" text="OK" />
+                    <Button fx:id="cancel" layoutX="315.0" layoutY="338.0" onAction="#goback" style="-fx-background-color: #776B5D; -fx-text-fill: #FFFFFF;" text="Cancel" />
+                </children>
+            </AnchorPane>
+        </items>
+    </SplitPane>
 </AnchorPane>
