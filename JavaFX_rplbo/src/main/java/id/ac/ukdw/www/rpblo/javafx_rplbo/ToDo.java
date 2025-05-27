@@ -4,9 +4,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import java.time.LocalDate;
 
 public class ToDo {
+
+    private int id;
     private final StringProperty judul;
     private final StringProperty deskripsi;
     private final StringProperty deadline;
@@ -14,9 +15,16 @@ public class ToDo {
     private final BooleanProperty prioritas;
     private ToDo currentToDo;
     private BooleanProperty selected = new SimpleBooleanProperty(false);
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
     // Constructor
-    public ToDo(String judul, String deskripsi, String deadline, String kategori, boolean prioritas) {
+    public ToDo(int id, String judul, String deskripsi, String deadline, String kategori, boolean prioritas) {
+        this.id = id;
         this.judul = new SimpleStringProperty(judul);
         this.deskripsi = new SimpleStringProperty(deskripsi);
         this.deadline = new SimpleStringProperty(deadline);
@@ -46,5 +54,7 @@ public class ToDo {
     public void setDeskripsi(String deskripsi) { this.deskripsi.set(deskripsi); }
     public void setDeadline(String deadline) { this.deadline.set(deadline); }
     public void setKategori(String kategori) { this.kategori.set(kategori); }
-    public void setPrioritas(boolean prioritas) { this.prioritas.set(prioritas); }
+    public void setPrioritas(boolean prioritas) { this.prioritas.set(prioritas);}
+
+
 }
