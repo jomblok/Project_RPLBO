@@ -5,12 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import id.ac.ukdw.www.rpblo.javafx_rplbo.Manager.MariaDBDriver;
+import id.ac.ukdw.www.rpblo.javafx_rplbo.Manager.SqliteDB;
 import id.ac.ukdw.www.rpblo.javafx_rplbo.Manager.Sessionmanager;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
+
 
 public class LoginController {
 
@@ -21,12 +21,12 @@ public class LoginController {
     private PasswordField passwordField;
 
     @FXML
-    private void handleLogin() {
+    private void onLogin() {
+
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        // Mendapatkan koneksi dari singleton instance MariaDBDriver
-        try (Connection connection = MariaDBDriver. getInstance().getConnection()) {
+        try (Connection connection = SqliteDB.getInstance().getConnection()) {
             String query = "SELECT * FROM user WHERE username = ? AND password = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, username);
@@ -41,12 +41,25 @@ public class LoginController {
 
                 // Set session user
                 Sessionmanager.setCurrentUser(usernameFromDB, userId);
-                System.out.println("✅ Login berhasil sebagai: " + username);
+
+                Apps.setLoggedInUsername(usernameFromDB);
+
+                // Notifikasi login berhasil
+                javafx.scene.control.Alert successAlert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Login Berhasil");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Selamat datang, " + username + "!");
+                successAlert.showAndWait();
 
                 // Ganti scene ke halaman utama
                 Apps.showMain();
             } else {
-                System.out.println("❌ Login gagal. Username atau password salah.");
+                // Login gagal - tampilkan alert
+                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+                alert.setTitle("Login Gagal");
+                alert.setHeaderText(null);
+                alert.setContentText("Username atau password salah.");
+                alert.showAndWait();
             }
 
             resultSet.close();
@@ -56,9 +69,12 @@ public class LoginController {
         }
     }
 
+
+
     @FXML
     private void goToRegister() {
         Apps.showRegister();
     }
+
 
 }
