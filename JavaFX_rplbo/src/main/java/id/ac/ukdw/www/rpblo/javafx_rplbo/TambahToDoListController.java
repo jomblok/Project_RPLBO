@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class TambahToDoListController implements Initializable {
@@ -111,12 +112,35 @@ public class TambahToDoListController implements Initializable {
         } else {
             ToDo newToDo = new ToDo(taskJudul, taskDeskripsi, taskDeadline, taskKategori, isPrioritas);
             if (isPrioritas) {
-                MainController.getToDoList().add(0, newToDo); //membuat prioritas menjadi urutan paling atas
+                List<ToDo> toDoList = MainController.getToDoList();
+                int index = 0;
 
-            } else {
+                // Mencari posisi yang sesuai berdasarkan deadline
+                for (int i = 0; i < toDoList.size(); i++) {
+                    ToDo current = toDoList.get(i);
+
+                    if (current.isPrioritas()) {
+                        // Bandingkan deadline
+                        if (newToDo.getDeadline().compareTo(current.getDeadline()) < 0) {
+                            break;
+                        }
+                    } else {
+                        // jika ketemu to do list  bukan prioritas
+                        break;
+                    }
+                    index++;
+                }
+
+                // memasukkan to do list pada posisi yang sesuai
+                toDoList.add(index, newToDo);
+
+            }else {
+                // Tambah biasa jika tidak prioritas
                 MainController.getToDoList().add(newToDo);
             }
+
         }
+
 
         // ✅ Tampilkan notifikasi sukses
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
