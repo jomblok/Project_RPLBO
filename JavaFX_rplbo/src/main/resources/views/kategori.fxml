@@ -16,29 +16,42 @@
 
         <!-- Input Tambahkan Kategori -->
         <HBox alignment="CENTER_LEFT" spacing="5">
-            <TextField fx:id="inputKategori" promptText="Tambahkan kategori..." HBox.hgrow="ALWAYS"
+            <TextField fx:id="inputKategori"
+                       promptText="Tambahkan kategori..."
+                       HBox.hgrow="ALWAYS"
                        style="-fx-background-color: white; -fx-text-fill: #393232; -fx-prompt-text-fill: #888C8D;" />
-            <Button onAction="#tambahKategori" text="Tambah"
+
+            <!-- Tambah/Edit Button -->
+            <Button fx:id="btnTambah"
+                    onAction="#tambahKategori"
+                    text="Tambah"
                     style="-fx-background-color: #776B5D; -fx-text-fill: white;" />
         </HBox>
 
         <!-- Tabel Kategori -->
-        <TableView fx:id="tabelKategori" prefHeight="200"
+        <TableView fx:id="tabelKategori"
+                   prefHeight="200"
                    style="-fx-background-color: white;">
             <columns>
-                <TableColumn fx:id="kolomNama" prefWidth="300" text="Nama Kategori"
+                <TableColumn fx:id="kolomNama"
+                             prefWidth="300"
+                             text="Nama Kategori"
                              style="-fx-text-fill: #393232;" />
-                <TableColumn fx:id="kolomAksi" prefWidth="150" text="Aksi"
+
+                <TableColumn fx:id="kolomAksi"
+                             prefWidth="150"
+                             text="Aksi"
                              style="-fx-text-fill: #393232;" />
             </columns>
         </TableView>
 
-        <!-- Tombol Aksi Umum -->
+        <!-- Tombol Kembali -->
         <HBox alignment="CENTER_RIGHT" spacing="20">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10" />
             </padding>
-            <Button text="Cancel" onAction="#toHalamanUtama"
+            <Button text="Cancel"
+                    onAction="#toHalamanUtama"
                     style="-fx-background-color: #776B5D; -fx-text-fill: white;" />
         </HBox>
     </VBox>

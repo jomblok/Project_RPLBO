@@ -54,7 +54,7 @@ public class ToDo {
     public void setDeskripsi(String deskripsi) { this.deskripsi.set(deskripsi); }
     public void setDeadline(String deadline) { this.deadline.set(deadline); }
     public void setKategori(String kategori) { this.kategori.set(kategori); }
-    public void setPrioritas(boolean prioritas) { this.prioritas.set(prioritas);}
+    public void setPrioritas(boolean prioritas) { this.prioritas.set(prioritas); }
 
 
 }

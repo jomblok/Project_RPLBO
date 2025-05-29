@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TableRow;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -66,7 +65,6 @@ public class MainController {
             {
                 editBtn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
                 hapusBtn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
-                HBox.setMargin(editBtn, new Insets(0, 0, 0, 50));
 
                 hapusBtn.setOnAction(event -> {
                     ToDo todo = getTableView().getItems().get(getIndex());
@@ -320,7 +318,15 @@ public class MainController {
     @FXML
     void addCategory(ActionEvent event) {
         Apps.showKategori();
+        // setelah dialog ditutup, update isi combo box
+        List<String> semuaKategori = new ArrayList<>();
+        semuaKategori.add("Semua");
+        semuaKategori.addAll(KategoriController.getKategoriComboBoxItems());
+        comboKategori.getItems().setAll(semuaKategori);
+        comboKategori.setValue("Semua");
     }
+
+
 
     @FXML
     void modul_tambah_todolist(ActionEvent event) {

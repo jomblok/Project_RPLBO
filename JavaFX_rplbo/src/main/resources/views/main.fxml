@@ -7,28 +7,44 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="827.0" style="-fx-background-color: #888C8D;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="id.ac.ukdw.www.rpblo.javafx_rplbo.MainController">
-   <children>
-      <TextField fx:id="searchKategori" layoutX="22.0" layoutY="39.0" prefHeight="26.0" prefWidth="230.0" promptText="Masukkan Jenis kategori ..." />
-      <TextField fx:id="searchKataKunci" layoutX="275.0" layoutY="40.0" prefHeight="25.0" prefWidth="230.0" promptText="Masukkan Kata Kunci" />
-      <Line endX="827.0" endY="58.70001220703125" layoutY="20.0" startX="1.220703143189894E-5" startY="58.70001220703125" />
-      <TableView fx:id="TableView" layoutX="22.0" layoutY="95.0" prefHeight="298.0" prefWidth="780.0" style="-fx-background-color: #FAFAFA;">
-        <columns>
-          <TableColumn fx:id="noColumn" prefWidth="75.0" text="No" />
-          <TableColumn fx:id="todolist" prefWidth="165.60003662109375" text="ToDoList" />
-            <TableColumn fx:id="deadline" prefWidth="127.19996643066406" text="DeadLine" />
-            <TableColumn fx:id="kategori" prefWidth="152.0" text="Kategori" />
-            <TableColumn fx:id="checkboxColumn" editable="true" text="Checkbox" />
-            <TableColumn fx:id="aksi" prefWidth="178.0" text="Aksi" />
-        </columns>
-      </TableView>
-       <ComboBox fx:id="comboKategori" layoutX="625.0" layoutY="40.0" onAction="#SearchByCategory" prefHeight="25.0" prefWidth="88.0" style="-fx-background-color: #FAFAFA;" />
-      <Button layoutX="516.0" layoutY="40.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="25.0" prefWidth="96.0" style="-fx-background-color: #FAFAFA;" text="add Category" />
-      <Button layoutX="752.0" layoutY="343.0" maxHeight="60.0" maxWidth="66.0" mnemonicParsing="false" onAction="#modul_tambah_todolist" prefHeight="60.0" prefWidth="66.0" style="-fx-background-radius: 50; -fx-min-width: 35; -fx-min-height: 35; -fx-max-width: 35; -fx-max-height: 35; -fx-background-color: #888C8D; -fx-text-fill: white;" text="+" />
-      <Button layoutX="726.0" layoutY="40.0" mnemonicParsing="false" onAction="#Keluar" prefHeight="1.0" prefWidth="88.0" style="-fx-background-color: #FAFAFA;" text="Keluar" />
-      <Label layoutX="22.0" layoutY="17.0" prefHeight="17.0" prefWidth="162.0" text="Search by Category" />
-      <Label layoutX="275.0" layoutY="17.0" prefHeight="17.0" prefWidth="162.0" text="Search by Keyword" />
-   </children>
+<AnchorPane prefHeight="849.0" prefWidth="1622.0" style="-fx-background-color: #888C8D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="id.ac.ukdw.www.rpblo.javafx_rplbo.MainController">
+
+    <children>
+        <VBox AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+            <!-- Top row: Search by Category and Keyword Labels -->
+            <HBox prefHeight="30" spacing="10">
+                <Label text="Search by Category" />
+                <Label prefHeight="17.0" prefWidth="399.0" />
+                <Label prefHeight="17.0" prefWidth="110.0" text="Search by Category" />
+            </HBox>
+
+            <!-- Input row -->
+            <HBox prefHeight="35" spacing="10">
+                <TextField fx:id="searchKategori" promptText="Masukkan Jenis kategori ..." HBox.hgrow="ALWAYS" />
+                <TextField fx:id="searchKataKunci" promptText="Masukkan Kata Kunci" HBox.hgrow="ALWAYS" />
+
+                <Button onAction="#addCategory" text="add Category" />
+                <ComboBox fx:id="comboKategori" onAction="#SearchByCategory" prefWidth="120" />
+                <Button onAction="#Keluar" text="Keluar" />
+            </HBox>
+        </VBox>
+
+        <TableView fx:id="TableView" prefHeight="400.0" prefWidth="834.0" style="-fx-background-color: #FFFFFF;                   -fx-border-color: #B0BEC5;                   -fx-border-radius: 8;                   -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.1), 8, 0, 2, 2);" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="90.0">
+            <columns>
+                <TableColumn fx:id="noColumn" prefWidth="80" text="No" />
+                <TableColumn fx:id="todolist" prefWidth="361.0" text="ToDoList" />
+                <TableColumn fx:id="deadline" prefWidth="212.0" text="DeadLine" />
+                <TableColumn fx:id="kategori" prefWidth="269.0" text="Kategori" />
+                <TableColumn fx:id="checkboxColumn" prefWidth="210.0" text="Selesai" />
+                <TableColumn fx:id="aksi" minWidth="0.0" prefWidth="226.0" text="Aksi" />
+            </columns>
+        </TableView>
+
+
+        <!-- Floating Add Button -->
+        <Button layoutX="1557.8" layoutY="725.0" onAction="#modul_tambah_todolist" prefHeight="80.0" prefWidth="80.0" style="-fx-background-radius: 50;                -fx-background-color: #4CAF50;                -fx-text-fill: white;                -fx-font-size: 36px;                -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.3), 8, 0, 2, 2);" text="+" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+    </children>
 </AnchorPane>
