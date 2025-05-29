@@ -100,9 +100,6 @@ public class Apps extends Application {
         }
     }
 
-
-
-
     public static void showRegister() {
         try {
             FXMLLoader loader = new FXMLLoader(Apps.class.getResource("/views/register.fxml"));
@@ -115,7 +112,6 @@ public class Apps extends Application {
             e.printStackTrace();
         }
     }
-
     public static void showTambahToDo(ToDo todo) {
         try {
             FXMLLoader loader = new FXMLLoader(Apps.class.getResource("/views/TambahToDoList.fxml"));
