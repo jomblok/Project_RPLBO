@@ -1,6 +1,6 @@
 package id.ac.ukdw.www.rpblo.javafx_rplbo;
 
-import id.ac.ukdw.www.rpblo.javafx_rplbo.Manager.MariaDBDriver;
+import id.ac.ukdw.www.rpblo.javafx_rplbo.Manager.SqliteDB;
 import id.ac.ukdw.www.rpblo.javafx_rplbo.Manager.Sessionmanager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import java.sql.*;
 
@@ -26,30 +27,31 @@ public class KategoriController {
     @FXML
     private TableColumn<Kategori, Void> kolomAksi;
 
+    private Kategori editingItem = null;
     private final ObservableList<Kategori> daftarKategori = FXCollections.observableArrayList();
     private static final ObservableList<String> kategoriComboBoxItems = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
         kolomNama.setCellValueFactory(data -> data.getValue().namaProperty());
-
         kolomAksi.setCellFactory(col -> new TableCell<>() {
             private final Button btnEdit = new Button("✏");
             private final Button btnHapus = new Button("🗑");
             private final HBox actionBox = new HBox(5, btnEdit, btnHapus);
 
             {
-                btnHapus.setOnAction(e -> {
-                    Kategori item = getTableView().getItems().get(getIndex());
-                    hapusKategoriDariDatabase(item.getNama());
-                    daftarKategori.remove(item);
-                    kategoriComboBoxItems.remove(item.getNama());
+                btnEdit.setOnAction(e -> {
+                    editingItem = getTableView().getItems().get(getIndex());
+                    inputKategori.setText(editingItem.getNama());
                 });
 
-                btnEdit.setOnAction(e -> {
+                btnHapus.setOnAction(e -> {
                     Kategori item = getTableView().getItems().get(getIndex());
-                    inputKategori.setText(item.getNama());
+
+                    // Hapus dari database
                     hapusKategoriDariDatabase(item.getNama());
+
+                    // Baru hapus dari UI setelah berhasil
                     daftarKategori.remove(item);
                     kategoriComboBoxItems.remove(item.getNama());
                 });
@@ -59,8 +61,6 @@ public class KategoriController {
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
                 setGraphic(empty ? null : actionBox);
-            }
-        });
 
         tabelKategori.setItems(daftarKategori);
         loadKategoriDariDatabase();
