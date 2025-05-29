@@ -4,7 +4,7 @@ import id.ac.ukdw.www.rpblo.javafx_rplbo.Apps;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
-
+import javafx.scene.control.Alert;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -27,25 +27,25 @@ public class RegisterController {
         String pass = passwordField.getText();
         String confirm = confirmPasswordField.getText();
 
-        if (pass.equals(confirm)) {
-            try {
-                Connection conn = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\User\\Desktop\\Project\\JavaFX_rplbo\\user.db"); // Ganti dengan URL database kamu
-                String sql = "INSERT INTO user (username, password) VALUES (?, ?)";
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setString(1, user);
-                stmt.setString(2, pass); // Disarankan enkripsi dulu, misal dengan hashing
+        // Validasi username
+        if (user.length() < 8) {
+            showAlert(Alert.AlertType.WARNING, "Username Tidak Valid", "Username harus memiliki minimal 8 karakter.");
+            return;
+        }
 
-                stmt.executeUpdate();
-                stmt.close();
-                conn.close();
+        // Validasi password
+        if (!isValidPassword(pass)) {
+            showAlert(Alert.AlertType.WARNING, "Password Tidak Valid",
+                    "Password harus memiliki minimal 8 karakter dan mengandung huruf kapital, huruf kecil, angka, dan spesial karakter.");
+            return;
+        }
 
-                System.out.println("Registrasi sukses untuk: " + user);
-                Apps.showLogin();
-            } catch (SQLException e) {
-                System.out.println("Gagal registrasi: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Password tidak cocok");
+        if (!pass.equals(confirm)) {
+            showAlert(Alert.AlertType.WARNING, "Password Tidak Cocok", "Password dan Konfirmasi Password harus sama.");
+            return;
+        }
+
+        // Proses penyimpanan ke database               System.out.println("Password tidak cocok");
         }
     }
 
