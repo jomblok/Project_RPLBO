@@ -1,6 +1,6 @@
 package id.ac.ukdw.www.rpblo.javafx_rplbo;
 
-import id.ac.ukdw.www.rpblo.javafx_rplbo.Manager.MariaDBDriver;
+import id.ac.ukdw.www.rpblo.javafx_rplbo.Manager.SqliteDB;
 import id.ac.ukdw.www.rpblo.javafx_rplbo.Manager.Sessionmanager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import java.sql.*;
 
@@ -26,30 +27,31 @@ public class KategoriController {
     @FXML
     private TableColumn<Kategori, Void> kolomAksi;
 
+    private Kategori editingItem = null;
     private final ObservableList<Kategori> daftarKategori = FXCollections.observableArrayList();
     private static final ObservableList<String> kategoriComboBoxItems = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
         kolomNama.setCellValueFactory(data -> data.getValue().namaProperty());
-
         kolomAksi.setCellFactory(col -> new TableCell<>() {
             private final Button btnEdit = new Button("✏");
             private final Button btnHapus = new Button("🗑");
             private final HBox actionBox = new HBox(5, btnEdit, btnHapus);
 
             {
-                btnHapus.setOnAction(e -> {
-                    Kategori item = getTableView().getItems().get(getIndex());
-                    hapusKategoriDariDatabase(item.getNama());
-                    daftarKategori.remove(item);
-                    kategoriComboBoxItems.remove(item.getNama());
+                btnEdit.setOnAction(e -> {
+                    editingItem = getTableView().getItems().get(getIndex());
+                    inputKategori.setText(editingItem.getNama());
                 });
 
-                btnEdit.setOnAction(e -> {
+                btnHapus.setOnAction(e -> {
                     Kategori item = getTableView().getItems().get(getIndex());
-                    inputKategori.setText(item.getNama());
+
+                    // Hapus dari database
                     hapusKategoriDariDatabase(item.getNama());
+
+                    // Baru hapus dari UI setelah berhasil
                     daftarKategori.remove(item);
                     kategoriComboBoxItems.remove(item.getNama());
                 });
@@ -68,6 +70,14 @@ public class KategoriController {
 
     @FXML
     void toHalamanUtama(ActionEvent event) {
+        inputKategori.clear();
+        editingItem = null;
+
+        // Tutup window kategori (yang sekarang aktif)
+        Stage currentStage = (Stage) inputKategori.getScene().getWindow();
+        currentStage.close();
+
+        // Tampilkan kembali halaman utama (di primaryStage)
         Apps.showMain();
     }
 
@@ -75,23 +85,13 @@ public class KategoriController {
     private void tambahKategori() {
         String nama = inputKategori.getText().trim();
         int userId = Sessionmanager.getCurrentUserId();
-        if (!nama.isEmpty()) {
-            try {
-                Connection conn = MariaDBDriver.getInstance().getConnection();
-                String sql = "INSERT INTO kategori (nama, user_id) VALUES (?, ?)";
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setString(1, nama);
-                stmt.setInt(2, userId);
-                stmt.executeUpdate();
-                stmt.close();
 
-                Kategori kategoriBaru = new Kategori(nama);
-                daftarKategori.add(kategoriBaru);
-                kategoriComboBoxItems.add(nama);
-                inputKategori.clear();
-            } catch (SQLException e) {
-                System.out.println("Gagal menambah kategori: " + e.getMessage());
-            }
+        if (!nama.isEmpty()) {
+            if (editingItem != null) {
+                try {
+                    Connection conn = SqliteDB.getInstance().getConnection();
+                    String sql = "UPDATE kategori SET nama = ? WHERE nama = ? AND user_id = ?";
+                    PreparedStatement stmt = conn.prepareStatement(sql);
         }
     }
 
