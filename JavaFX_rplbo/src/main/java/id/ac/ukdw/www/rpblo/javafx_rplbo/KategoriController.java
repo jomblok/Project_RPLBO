@@ -124,6 +124,36 @@ public class KategoriController {
             inputKategori.clear();
         }
     }
+
+    private void loadKategoriDariDatabase() {
+        daftarKategori.clear();
+        kategoriComboBoxItems.clear();
+        int userId = Sessionmanager.getCurrentUserId();
+        try {
+            Connection conn = SqliteDB.getInstance().getConnection();
+            String sql = "SELECT nama FROM kategori WHERE user_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String nama = rs.getString("nama");
+                Kategori kategori = new Kategori(nama);
+                daftarKategori.add(kategori);
+                kategoriComboBoxItems.add(nama);
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println("Gagal memuat kategori: " + e.getMessage());
+        }
+    }
+
+    private void hapusKategoriDariDatabase(String nama) {
+        int userId = Sessionmanager.getCurrentUserId();
+        try {
+            Connection conn = SqliteDB.getInstance().getConnection();
+            String sql = "DELETE FROM kategori WHERE nama = ? AND user_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, nama);
             stmt.setInt(2, userId);
             stmt.executeUpdate();
             stmt.close();
@@ -154,5 +184,6 @@ public class KategoriController {
         public SimpleStringProperty namaProperty() {
             return nama;
         }
+
     }
 }
