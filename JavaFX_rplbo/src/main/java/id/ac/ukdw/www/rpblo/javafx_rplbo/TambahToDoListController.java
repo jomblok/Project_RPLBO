@@ -143,6 +143,6 @@ public class TambahToDoListController implements Initializable {
             }
             kategoriComboBox.setValue(currentToDo.getKategori());
             prioritas.setSelected(currentToDo.isPrioritas());
- }
-}
+        }
+    }
 }
