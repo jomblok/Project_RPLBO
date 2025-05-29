@@ -45,11 +45,6 @@ public class TambahToDoListController implements Initializable {
             prefillForm();
         }
     }
-
-
-
-    
-
     // Getter untuk mengambil currentToDo (jika diperlukan)
     public ToDo getCurrentToDo() {
         return currentToDo;
@@ -72,6 +67,9 @@ public class TambahToDoListController implements Initializable {
         });
     }
 
+
+
+    
     @FXML
     void submit(ActionEvent event) {
         String taskJudul = judul.getText();
