@@ -92,6 +92,36 @@ public class KategoriController {
                     Connection conn = SqliteDB.getInstance().getConnection();
                     String sql = "UPDATE kategori SET nama = ? WHERE nama = ? AND user_id = ?";
                     PreparedStatement stmt = conn.prepareStatement(sql);
+                    stmt.setString(1, nama); // nama baru
+                    stmt.setString(2, editingItem.getNama()); // nama lama
+                    stmt.setInt(3, userId);
+                    stmt.executeUpdate();
+                    stmt.close();
+                } catch (SQLException e) {
+                    System.out.println("Gagal mengedit kategori di database: " + e.getMessage());
+                }
+                // Mode edit (opsional: bisa tambahkan update ke database jika nama kategori bisa diubah)
+            } else {
+                // Mode tambah baru - TAMBAHKAN KE DATABASE
+                try {
+                    Connection conn = SqliteDB.getInstance().getConnection();
+                    String sql = "INSERT INTO kategori (nama, user_id) VALUES (?, ?)";
+                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    stmt.setString(1, nama);
+                    stmt.setInt(2, userId);
+                    stmt.executeUpdate();
+                    stmt.close();
+
+                    // Tambahkan ke tampilan setelah berhasil simpan
+                    Kategori kategoriBaru = new Kategori(nama);
+                    daftarKategori.add(kategoriBaru);
+                    kategoriComboBoxItems.add(nama);
+
+                } catch (SQLException e) {
+                    System.out.println("Gagal menambah kategori ke database: " + e.getMessage());
+                }
+            }
+            inputKategori.clear();
         }
     }
 
@@ -100,7 +130,7 @@ public class KategoriController {
         kategoriComboBoxItems.clear();
         int userId = Sessionmanager.getCurrentUserId();
         try {
-            Connection conn = MariaDBDriver.getInstance().getConnection();
+            Connection conn = SqliteDB.getInstance().getConnection();
             String sql = "SELECT nama FROM kategori WHERE user_id = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userId);
@@ -120,7 +150,7 @@ public class KategoriController {
     private void hapusKategoriDariDatabase(String nama) {
         int userId = Sessionmanager.getCurrentUserId();
         try {
-            Connection conn = MariaDBDriver.getInstance().getConnection();
+            Connection conn = SqliteDB.getInstance().getConnection();
             String sql = "DELETE FROM kategori WHERE nama = ? AND user_id = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, nama);
@@ -154,5 +184,6 @@ public class KategoriController {
         public SimpleStringProperty namaProperty() {
             return nama;
         }
+
     }
 }
