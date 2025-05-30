@@ -3,7 +3,7 @@ package id.ac.ukdw.www.rpblo.javafx_rplbo.Manager;
 import java.sql.*;
 
 public class SqliteDB implements DatabaseDriver{
-    private static final String URL = "jdbc:Sqlite:D:\\RPLBO_JAWIR\\Project\\JavaFX_rplbo\\user.db";
+    private static final String URL = "jdbc:Sqlite:user.db";
 
 
     private static volatile SqliteDB instance;

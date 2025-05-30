@@ -3,6 +3,7 @@ package id.ac.ukdw.www.rpblo.javafx_rplbo;
 import id.ac.ukdw.www.rpblo.javafx_rplbo.Manager.SqliteDB;
 import id.ac.ukdw.www.rpblo.javafx_rplbo.Manager.Sessionmanager;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -53,6 +54,7 @@ public class MainController {
         kategori.setCellValueFactory(new PropertyValueFactory<>("kategori"));
         TableView.setEditable(true);
         checkboxColumn.setEditable(true);
+
 
         loadToDoFromDatabase();
         cekDeadlineBesok();
@@ -108,13 +110,15 @@ public class MainController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty ? null : String.valueOf(getTableRow().getIndex() + 1));
+                setText(empty ? null : String.valueOf(getIndex() + 1));
             }
         });
 
-        checkboxColumn.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
+        checkboxColumn.setCellValueFactory(cellData -> {
+            ToDo todo = cellData.getValue();
+            return new SimpleBooleanProperty(todo.isSelesai());
+        });
         checkboxColumn.setCellFactory(CheckBoxTableCell.forTableColumn(checkboxColumn));
-
         TableView.setRowFactory(tv -> new TableRow<ToDo>() {
             @Override
             protected void updateItem(ToDo item, boolean empty) {
@@ -167,8 +171,8 @@ public class MainController {
                 String deadline = rs.getString("deadline");
                 String kategori = rs.getString("kategori");
                 boolean prioritas = rs.getInt("prioritas") == 1;
-
-                semuaToDo.add(new ToDo(id, judul, deskripsi, deadline, kategori, prioritas));
+                boolean selesai = rs.getInt("selesai") == 1;
+                semuaToDo.add(new ToDo(id, judul, deskripsi, deadline, kategori, prioritas, selesai));
             }
 
             rs.close();

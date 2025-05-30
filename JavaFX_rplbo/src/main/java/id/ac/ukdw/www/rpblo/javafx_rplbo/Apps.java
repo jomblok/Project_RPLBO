@@ -32,7 +32,7 @@ public class Apps extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(Apps.class.getResource("/views/login.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 1920, 1100);
+            Scene scene = new Scene(root);
 
             // Pastikan keluar dari fullscreen dan maximize
             primaryStage.setFullScreen(false);
@@ -103,7 +103,7 @@ public class Apps extends Application {
     public static void showRegister() {
         try {
             FXMLLoader loader = new FXMLLoader(Apps.class.getResource("/views/register.fxml"));
-            Scene scene = new Scene(loader.load(), 1920, 1100);
+            Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Register");
             primaryStage.centerOnScreen();

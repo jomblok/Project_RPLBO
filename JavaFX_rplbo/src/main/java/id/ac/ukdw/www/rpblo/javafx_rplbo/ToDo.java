@@ -13,6 +13,7 @@ public class ToDo {
     private final StringProperty deadline;
     private final StringProperty kategori;
     private final BooleanProperty prioritas;
+    private boolean selesai;
     private ToDo currentToDo;
     private BooleanProperty selected = new SimpleBooleanProperty(false);
     public int getId() {
@@ -23,13 +24,14 @@ public class ToDo {
         this.id = id;
     }
     // Constructor
-    public ToDo(int id, String judul, String deskripsi, String deadline, String kategori, boolean prioritas) {
+    public ToDo(int id, String judul, String deskripsi, String deadline, String kategori, boolean prioritas, boolean selesai) {
         this.id = id;
         this.judul = new SimpleStringProperty(judul);
         this.deskripsi = new SimpleStringProperty(deskripsi);
         this.deadline = new SimpleStringProperty(deadline);
         this.kategori = new SimpleStringProperty(kategori);
         this.prioritas = new SimpleBooleanProperty(prioritas);
+        this.selesai = selesai;
     }
 
     // Getter and Setter methods
@@ -57,4 +59,11 @@ public class ToDo {
     public void setPrioritas(boolean prioritas) { this.prioritas.set(prioritas); }
 
 
+    public boolean isSelesai() {
+        return selesai;
+    }
+
+    public void setSelesai(boolean selesai) {
+        this.selesai = selesai;
+    }
 }
